@@ -44,7 +44,8 @@ Here is what an auth configuration file looks like:
   "AUTH0_ALGORITHM": "RS256",
   "AUTH0_DOMAIN": "YOURDOMAIN.auth0.com",
   "AUTH0_HOST": "https://YOURDOMAIN.auth0.com",
-  "AUTH0_LOGIN_URL": "https://YOURDOMAIN.auth0.com/login",
+  "AUTH0_SCOPE": "openid%profile",
+  "AUTH0_LOGIN_URL": "https://YOURDOMAIN.auth0.com/authorize",
   "CALLBACK_PATH": "/logincb"
 }
 ```
@@ -57,6 +58,7 @@ Here is a description of each field:
 * `AUTH0_CLIENT_ALGORITHM` - either `"RS256"` or `"HS256"` depending on how your Auth0 application is configured
 * `AUTH0_DOMAIN` - your Auth0 domain, aka `your-auth0-tenant.auth0.com`
 * `AUTH0_HOST` - the url to your auth0 tenant aka `https://your-auth0-tenant.auth0.com`
+* `AUTH0_SCOPE`-  OpenID Connect Scopes, for example, "openid%profile" or "openid%email",
 * `AUTH0_LOGIN_URL` - the url to your app's login page
 * `CALLBACK_PATH` - the callback url the lambda should listen on for login responses from Auth0.  Leave as `"/logincb"` unless that conflicts with some route in your app.
 
