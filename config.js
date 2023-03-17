@@ -1,21 +1,22 @@
-const AWS = require('aws-sdk');
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
-const s3 = new AWS.S3();
+const s3 = new S3Client();
 const cache = {};
 
 function getConfig(configFileName, callback) {
   //configuring parameters
   const params = {
-    Bucket: 'auth-config.experoinc.com',
+    Bucket: 'sevaro-auth0-dev',
     Key: configFileName
   };
 
-  s3.getObject(params, function (err, data) {
+const getObjCommand = new GetObjectCommand(params);
+  s3.send(getObjCommand, async function (err, data) {
     if (err) {
       callback(err, null);
     }
     else {
-      const config = data && data.Body && JSON.parse(data.Body.toString());
+      const config = JSON.parse(await data?.Body?.transformToString());
       callback(null, config);
     }
   });
