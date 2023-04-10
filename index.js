@@ -129,8 +129,11 @@ function redirectIfNotAuthenticated(config, request, callback) {
   const encodedRedirectUrl = encodeURIComponent(request.querystring ? `${request.uri}?${request.querystring}` : request.uri);
   const callbackUrl = `https://${headers.host[0].value}${config.CALLBACK_PATH}?dest=${encodedRedirectUrl}`;
   const encodedCallback = encodeURIComponent(callbackUrl);
-  const redirectUrl = `${config.AUTH0_LOGIN_URL}?client=${config.AUTH0_CLIENT_ID}&redirect_uri=${encodedCallback}&scope=${config.AUTH0_SCOPE}&state=${Date.now()}`;
-
+  let redirectUrl = `${config.AUTH0_LOGIN_URL}?response_type=code&client_id=${config.AUTH0_CLIENT_ID}&redirect_uri=${encodedCallback}&scope=${config.AUTH0_SCOPE}&state=${Date.now()}`;
+  if (Boolean(config.AUTH0_ORG_ID)) {
+    redirectUrl = `${redirectUrl}&organization=${config.AUTH0_ORG_ID}`;
+  }
+  
   callback(null, redirect(redirectUrl, [{name: "session-token", value: ""}]));
 
   return true; // handled
